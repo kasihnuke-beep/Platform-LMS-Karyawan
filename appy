@@ -1,0 +1,34 @@
+from flask import Flask, render_template, request
+
+app = Flask(__name__)
+
+# Data Produk (Contoh Database Sederhana)
+products = [
+    {"nama": "SaaS Keuangan", "deskripsi": "Aplikasi pengelola keuangan otomatis.", "harga": "Rp 150.000/bln"},
+    {"nama": "E-Kursus Desain", "deskripsi": "Belajar desain grafis dari nol.", "harga": "Rp 500.000"},
+    {"nama": "Template Website", "deskripsi": "Landing page siap pakai & SEO friendly.", "harga": "Rp 250.000"}
+]
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/produk')
+def produk():
+    return render_template('produk.html', products=products)
+
+@app.route('/kontak', methods=['GET', 'POST'])
+def kontak():
+    if request.method == 'POST':
+        nama = request.form.get('nama')
+        email = request.form.get('email')
+        pesan = request.form.get('pesan')
+        return render_template('response.html', nama=nama, email=email, pesan=pesan)
+    return render_template('kontak.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
